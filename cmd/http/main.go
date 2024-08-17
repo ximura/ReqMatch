@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ximura/ReqMatch/internal"
+	"github.com/ximura/ReqMatch/internal/sorted"
 )
 
 type pairInfo struct {
@@ -25,10 +25,8 @@ func main() {
 	mux := http.NewServeMux()
 	var pairCounter atomic.Uint32
 	newReqChan := make(chan pairInfo)
-
-	//stats := make(map[uint32]int64, 50000)
 	var m sync.RWMutex
-	stats := internal.NewSortedArray(50000, func(a, b statInfo) int {
+	stats := sorted.NewArray(500_000, func(a, b statInfo) int {
 		if a.delay == b.delay {
 			return 0
 		}
@@ -55,7 +53,6 @@ func main() {
 				id:    pairInfo.id,
 				delay: d.Nanoseconds(),
 			})
-			//stats[pairInfo.id] = d.Nanoseconds()
 			m.Unlock()
 
 			response := fmt.Sprintf("%d Second\n", pairInfo.id)

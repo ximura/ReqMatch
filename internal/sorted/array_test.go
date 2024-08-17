@@ -1,14 +1,13 @@
-package sorted_test
+package sorted
 
 import (
 	"testing"
 
-	"github.com/ximura/ReqMatch/internal/sorted"
 	"gotest.tools/v3/assert"
 )
 
 func TestSortedArray(t *testing.T) {
-	s := sorted.NewArray(3, func(a, b int) int {
+	s := NewArray(3, func(a, b int) int {
 		if a == b {
 			return 0
 		}
@@ -26,10 +25,11 @@ func TestSortedArray(t *testing.T) {
 	s.Insert(20)
 
 	assert.Equal(t, s.Len(), 3)
+	assert.DeepEqual(t, s.innerArray, []int{1, 2, 5})
 }
 
 func BenchmarkArray(b *testing.B) {
-	s := sorted.NewArray(3, func(a, b int) int {
+	s := NewArray(3, func(a, b int) int {
 		if a == b {
 			return 0
 		}

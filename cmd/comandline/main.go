@@ -24,7 +24,7 @@ func main() {
 		return -1
 	}, nil)
 
-	for i := 0; i < 1_000_000; i++ {
+	for i := 1_000_000; i >= 0; i-- {
 		stats.Insert(statInfo{
 			id:    i,
 			delay: i,
